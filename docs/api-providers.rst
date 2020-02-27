@@ -2,8 +2,9 @@
 
 .. _api-provider:
 
-Providers
-*********
+********
+Provider
+********
 
 A Provider abstracts a connection to the blockchain, for issuing queries
 and sending signed state changing transactions.
@@ -16,51 +17,53 @@ control or have access to, including mainnet, testnets, or localnets.
 .. _provider-connect:
 
 Connecting to Blockchain
-========================
+########################
 
 There are several methods to connect to the blockchain network provided. If you are not
 running your own local blockchain node, it is recommended that you use the ``getDefaultProvider()``
 method.
 
-:sup:`mxw` . getDefaultProvider( [ network :sup:`= "homestead"` ] ) |nbsp| `=> Provider`
+:sup:`mxw` . getDefaultProvider( [ network = "testnet" ] ) |nbsp| `=> Provider`
+    This creates a FallbackProvider backed by multiple backends.
+    
     This is the **recommended** method of connecting to the blockchain network if you are
     not running your own blockchain node.
 
-    This creates a FallbackProvider backed by multiple backends.
-
 .. code-block:: javascript
-    :caption: *get a standard network provider*
+    :caption: *get a standard network provider* 
 
-    let provider = mxw.getDefaultProvider("homestead");
+    let provider = mxw.getDefaultProvider("testnet");
 
 
 JsonRpcProvider :sup:`( inherits from Provider )`
------------------------------------------------------
+*************************************************
 
 .. _provider-jsonrpc-properties:
 
 :sup:`prototype` . connection
     An object describing the connection of the JSON-RPC endpoint with the properties:
 
-    - **url** --- the JSON-RPC URL
-    - **timeout** --- the RPC request timeout in milliseconds (default: 120,000 ms)
-    - **user** --- a username to use for Basic Authentication (optional)
-    - **password** --- a password to use for Basic Authentication (optional)
-    - **allowInsecure** --- allows Basic Authentication over an insecure HTTP network
+    - **url :** *string* url (the JSON-RPC URL)
+    - **timeout :** *int* RPC request timeout in milliseconds (default: 120,000 ms)
+    - **user :** *string* username (a username to use for Basic Authentication) *optional*
+    - **password :** *string* password ( a password to use for Basic Authentication) *optional*
+    - **allowInsecure :** *boolean* allowable of Basic Authentication over an insecure HTTP network (default: false)
+
 
 new :sup:`mxw . providers` . JsonRpcProvider( [ urlOrInfo :sup:`= "http://localhost:26657"` ] [ , network ] )
     Connect to the `JSON-RPC API`_ URL *urlorInfo* of an blockchain node.
 
     The *urlOrInfo* may also be specified as an object with the properties:
 
-    - **url** --- the JSON-RPC URL (required)
-    - **timeout** --- the RPC request timeout in milliseconds (default: 60,000 ms)
-    - **user** --- a username to use for Basic Authentication (optional)
-    - **password** --- a password to use for Basic Authentication (optional)
-    - **allowInsecure** --- allow Basic Authentication over an insecure HTTP network (default: false)
+    - **url :** *string* url (the JSON-RPC URL) ***required**
+    - **timeout :** *int* RPC request timeout in milliseconds (default: 60,000 ms)
+    - **user :** *string* username (a username to use for Basic Authentication) *optional*
+    - **password :** *string* password ( a password to use for Basic Authentication) *optional*
+    - **allowInsecure :** *boolean* allowable of Basic Authentication over an insecure HTTP network (default: false)
 
     **Also See:** JSON-RPC provider-specific :ref:`Properties <provider-jsonrpc-properties>` and :ref:`Operations <provider-jsonrpc-extra>`
 
+   
 
 .. code-block:: javascript
     :caption: *connect to a default provider*
@@ -95,18 +98,17 @@ new :sup:`mxw . providers` . JsonRpcProvider( [ urlOrInfo :sup:`= "http://localh
 -----
 
 Properties
-==========
+**********
 
-All properties are immutable unless otherwise specified, and will reflect their
-default values if left unspecified.
+Not all properties are mutable unless otherwise specified, and will reflect thier default values if left unspecified.
 
 .. _provider:
 
-Provider
---------
+Provider Variables
+==================
 
 :sup:`prototype` . blockNumber
-    The most recent block number (block height) this provider has seen and has triggered
+    return the most recent block number (block height) this provider has seen and has triggered
     events for. If no block has been seen, this is *null*.
 
 :sup:`prototype` . polling
@@ -130,24 +132,23 @@ Provider
 Network
 =======
 
-A network repsents various properties of a network, such as mainnet (i.e. "homestead"),
+A network represents various properties of a network, such as mainnet (i.e. "testnet"),
 testnet or private networks.
 
 :sup:`prototype` . getNetwork ( ) |nbsp| `=> Promise<Network>`
     A :ref:`Promise <promise>` that resolves to a `Network` object describing the
     connected network and chain. A network has the following properties:
 
-    - *name* --- the name of the network (e.g. "homestead")
     - *chainId* --- the chain ID (network ID) of the connected network
-
+    - *name* --- the name of the network (e.g. "testnet")
 
 .. code-block:: javascript
     :caption: *get a standard network*
 
-    let network = mxw.providers.getNetwork('homestead');
+    let network = mxw.providers.getNetwork('testnet');
     // {
     //    chainId: "mxw",
-    //    name: "homestead"
+    //    name: "testnet"
     // }
 
 
@@ -159,7 +160,6 @@ testnet or private networks.
         name: "local"
     }
 
-
 -----
 
 .. _provider-account:
@@ -167,18 +167,9 @@ testnet or private networks.
 Account
 =======
 
-:sup:`prototype` . getBalance ( addressOrName ) |nbsp| `=> Promise<BigNumber>`
+:sup:`prototype` . getBalance ( :ref:`AddressOrName <addressOrName>` ) |nbsp| `=> Promise<BigNumber>`
     Returns a :ref:`Promise <promise>` with the balance (as a :ref:`BigNumber <bignumber>`) of
-    the ``addressOrName``.
-
-:sup:`prototype` . getTransactionCount ( addressOrName ) |nbsp| `=> Promise<BigNumber>`
-    Returns a :ref:`Promise <promise>` with the number of sent transactions (as a :ref:`BigNumber <bignumber>`)
-    from the ``addressOrName``. This is also the nonce required to send a new transaction.
-
-:sup:`prototype` . getAccountNumber ( addressOrName ) |nbsp| `=> Promise<BigNumber>`
-    Returns a :ref:`Promise <promise>` with the account number of wallet (as a :ref:`BigNumber <bignumber>`)
-    from the ``addressOrName``.
-
+    the :ref:`AddressOrName <addressOrName>`.
 
 .. code-block:: javascript
     :caption: *get the balance of an account*
@@ -193,6 +184,9 @@ Account
         console.log("Balance: " + mxwString);
     });
 
+:sup:`prototype` . getTransactionCount ( :ref:`AddressOrName <addressOrName>` ) |nbsp| `=> Promise<BigNumber>`
+    Returns a :ref:`Promise <promise>` with the number of sent transactions (as a :ref:`BigNumber <bignumber>`)
+    from the :ref:`AddressOrName <addressOrName>`. This is also the nonce required to send a new transaction.
 
 .. code-block:: javascript
     :caption: *get the transaction count of an account*
@@ -203,6 +197,9 @@ Account
         console.log("Total Transactions Ever Sent: " + nonce.toString());
     });
 
+:sup:`prototype` . getAccountNumber ( :ref:`AddressOrName <addressOrName>` ) |nbsp| `=> Promise<BigNumber>`
+    Returns a :ref:`Promise <promise>` with the account number of wallet (as a :ref:`BigNumber <bignumber>`)
+    from the :ref:`AddressOrName <addressOrName>`.
 
 .. code-block:: javascript
     :caption: *get the account number*
@@ -219,20 +216,45 @@ Account
 .. _provider-blockchain:
 
 Blockchain Status
-=================
+================
 
 :sup:`prototype` . getBlockNumber ( ) |nbsp| `=> Promise<number>`
     Returns a :ref:`Promise <promise>` with the latest block number (as a Number).
 
+.. code-block:: javascript
+    :caption: *get latest block number*
+
+    provider.getBlockNumber().then((blockNumber) => {
+        console.log("Latest block number: " + blockNumber);
+    });
+
 :sup:`prototype` . getBlock ( blockHashOrBlockNumber ) |nbsp| `=> Promise<Block>`
     Returns a :ref:`Promise <promise>` with the block at *blockHashOrBlockNumber*. (See: :ref:`Block Responses <blockresponse>`)
+
+.. code-block:: javascript
+    :caption: *blocks*
+
+    // Block Number
+    provider.getBlock(12345).then((block) => {
+        console.log(block);
+    });
 
 :sup:`prototype` . getTransactionReceipt ( transactionHash ) |nbsp| `=> Promise<TransactionReceipt>`
     Returns a :ref:`Promise <promise>` with the transaction receipt with *transactionHash*.
     (See: :ref:`Transaction Receipts <transaction-receipt>`)
 
+.. code-block:: javascript
+    :caption: *query transaction receipt*
+
+    let transactionHash = "0x434c7fe4c7c7068289f0d369e428b7a3bf3882c3253f2b7f9529c0985a1cb500"
+
+    provider.getTransactionReceipt(transactionHash).then((receipt) => {
+        console.log(receipt);
+    });
+
 :sup:`prototype` . getTransactionFee ( route, transactionType, overrides, ... ) |nbsp| `=> Promise<TransactionFee>`
     Returns a :ref:`Promise <promise>` that resolves to the estimated *transaction fee* structure.
+
 
     The valid routes and transaction types are:
         - **kyc** --- the route for kyc module
@@ -279,39 +301,12 @@ Blockchain Status
         console.log("Fee:", fee);
     });
 
-
-.. code-block:: javascript
-    :caption: *get latest block number*
-
-    provider.getBlockNumber().then((blockNumber) => {
-        console.log("Latest block number: " + blockNumber);
-    });
-
-
-.. code-block:: javascript
-    :caption: *blocks*
-
-    // Block Number
-    provider.getBlock(12345).then((block) => {
-        console.log(block);
-    });
-
-
-.. code-block:: javascript
-    :caption: *query transaction receipt*
-
-    let transactionHash = "0x434c7fe4c7c7068289f0d369e428b7a3bf3882c3253f2b7f9529c0985a1cb500"
-
-    provider.getTransactionReceipt(transactionHash).then((receipt) => {
-        console.log(receipt);
-    });
-
 -----
 
 .. _waitForTransaction:
 
 Waiting for Transactions
-------------------------
+========================
 
 :sup:`prototype` . waitForTransaction ( transactionHash ) |nbsp| `=> Promise<TransactionReceipt>`
     Return a :ref:`Promise <promise>` which resolves to the
@@ -420,7 +415,15 @@ Block Responses
 .. _transaction-request:
 
 Transaction Requests
---------------------
+====================
+
+In order to excecute a transaction, a requests must be send. A Transaction Requests will contain following infomation:-
+
+*Transaction fee
+*Transaction memo
+    -Transaction Type(what kind of transaction is involve ex.transfer mxw, send message etc.)
+    -Transaction data or variables involve
+*Transaction signature (done by the requester)
 
 Any property which accepts a number may also be specified as a :ref:`BigNumber <bignumber>`
 or :ref:`hex string <hexstring>`. Any property may also be given as a :ref:`Promise <promise>`
@@ -482,7 +485,10 @@ which resolves to the expected type.
 .. _transaction-receipt:
 
 Transaction Receipts
---------------------
+====================
+
+| After every transaction, a receipt will be generated it contains every infomation regarding the transaction.
+| Transaction hash and block number is given, to check the transaction on blockchain.
 
 .. code-block:: javascript
 
@@ -575,12 +581,11 @@ Transaction Receipts
 -----
 
 Provider Specific Extra API Calls
-=================================
+*********************************
 
 .. _provider-jsonrpc-extra:
 
-JsonRpcProvider
----------------
+**JsonRpcProvider**
 
 :sup:`prototype` . send ( method , params ) |nbsp| `=> Promise<any>`
     Send the JSON-RPC *method* with *params*. This is useful for calling
