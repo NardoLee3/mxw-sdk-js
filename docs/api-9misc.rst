@@ -76,7 +76,6 @@ All properties for transaction are optional.
         "memo": ""
     }
 
-
 ------
 
 .. _transaction-request:

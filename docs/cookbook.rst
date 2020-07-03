@@ -54,7 +54,7 @@ First, we need to create a NFT. In this case, the airline are responsible to cre
 .. code-block:: javascript
 
    //set nft properties
-   let ntfProperties = {
+   let nftProperties = {
       name: "my2sgFlightTicket05",
       symbol: "my2sg05",
       fee: {
@@ -66,7 +66,7 @@ First, we need to create a NFT. In this case, the airline are responsible to cre
    };
 
    //create nft token using properties above
-   token.NonFungibleToken.create(ntfProperties,issuer).then((token)=>{
+   token.NonFungibleToken.create(nftProperties,issuer).then((token)=>{
       console.log(JSON.stringify(token))
    });
 
@@ -244,9 +244,7 @@ At last, the owner of the item can choose to burn the item(ticket) he owned.
    });
 
 
-.. note:: 
-   | Flight Ticketing System tutorial is organized like a module. To run the code, first compile using ``tsc``, then run with command:
-   |  ``node dist/flight-ticket.js``
+`Click Here`_ to get the source code from GitHub.
 
 --------
 
@@ -506,4 +504,5 @@ For complete source code, please download from here `GitHub`_.
 .. _VS Code: https://code.visualstudio.com/
 .. _Node: https://nodejs.org/en/download/
 .. _npm: https://nodejs.org/en/download/
-.. _GitHub: https://github.com/GeokTuanTeh/online-learning
+.. _GitHub: https://github.com/GeokTuanTeh/mxw-starterkit-nft-online-learning
+.. _Click Here: https://github.com/NardoLee3/mxw-starterkit-nft-flight-ticket
